@@ -1,11 +1,9 @@
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
-const express = require('express');
-const app = express();
+export default async function handler(req, res) {
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method Not Allowed' });
+  }
 
-app.use(express.json());
-
-app.post('/api/create-checkout-session', async (req, res) => {
-  console.log('📩 Received request body:', req.body);
   try {
     const { price_id } = req.body;
     if (!price_id) {
@@ -13,7 +11,7 @@ app.post('/api/create-checkout-session', async (req, res) => {
     }
 
     const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card'],
+      payment_method_types: ['card'], // เปลี่ยนเป็น 'promptpay' ถ้าต้องการ
       line_items: [
         {
           price: price_id,
@@ -25,11 +23,9 @@ app.post('/api/create-checkout-session', async (req, res) => {
       cancel_url: `${process.env.YOUR_DOMAIN}/cancel.html`,
     });
 
-    res.json({ url: session.url });
+    res.status(200).json({ url: session.url });
   } catch (error) {
-    console.error("Error creating checkout session:", error);
+    console.error('Error creating checkout session:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
-});
-
-module.exports = app;
+}

@@ -15,7 +15,7 @@ export default async function handler(req, res) {
     }
 
     const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card'],  // ✅ ลองใช้ 'card' ก่อน
+      payment_method_types: ['promptpay'],  // ✅ ลองใช้ 'card' ก่อน
       line_items: [{ price: price_id, quantity: 1 }],
       mode: 'payment',
       success_url: `${process.env.YOUR_DOMAIN}/success.html`,

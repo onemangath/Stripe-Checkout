@@ -1,5 +1,5 @@
 function checkout(priceId) {
-    fetch('/api/checkout', {
+    fetch('/api/create-checkout-session', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ price_id: priceId })

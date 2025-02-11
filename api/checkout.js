@@ -1,3 +1,4 @@
+/*
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -29,8 +30,8 @@ export default async function handler(req, res) {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 }
+*/
 
-/*
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const express = require('express');
 const app = express();
@@ -66,4 +67,3 @@ app.post('/api/create-checkout-session', async (req, res) => {
 });
 
 module.exports = app;
-*/

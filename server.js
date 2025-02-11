@@ -10,7 +10,7 @@ app.use(express.static('public'));
 const YOUR_DOMAIN = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000';
 
 app.get("/", (req, res) => {
-  res.send("Welcome to Stripe Checkout Server!");
+  res.sendFile(path.join(__dirname, 'index.html')); // เปลี่ยนเป็นส่งไฟล์ index.html
 });
 
 app.post('/create-checkout-session', async (req, res) => {

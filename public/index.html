@@ -34,7 +34,7 @@
 
   <script>
     function checkout(priceId) {
-    fetch('/create-checkout-session', {
+    fetch('/api/create-checkout-session', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ price_id: priceId })

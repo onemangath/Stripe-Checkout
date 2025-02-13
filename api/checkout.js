@@ -1,21 +1,27 @@
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
+const allowedOrigins = [
+  "http://127.0.0.1:5500",
+  "https://mysite.com"
+];
+
 export default async function handler(req, res) {
-  console.log("🔹 Incoming Request Method:", req.method);
+  const origin = req.headers.origin;
+  console.log("🔹 Incoming Request from:", origin);
+
+  // ✅ ตรวจสอบว่า Origin อยู่ในลิสต์ที่อนุญาต
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+  }
+
+  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
   // ✅ จัดการ Preflight Request (OPTIONS)
   if (req.method === "OPTIONS") {
     console.log("🟡 Handling Preflight Request (OPTIONS)");
-    res.setHeader("Access-Control-Allow-Origin", "http://127.0.0.1:5500");
-    res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS"); // ✅ วิธีที่ถูกต้อง
-    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-    return res.status(200).end(); // ✅ ตอบกลับ OK สำหรับ OPTIONS
+    return res.status(200).end();
   }
-
-  // ✅ กำหนด CORS Headers สำหรับทุก request
-  res.setHeader("Access-Control-Allow-Origin", "http://127.0.0.1:5500");
-  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
   if (req.method !== "POST") {
     console.error("❌ Method Not Allowed:", req.method);
